@@ -4,19 +4,18 @@
 			<div class="login-head">
 				<div class="logo"></div>
 			</div>
-			<el-form class="login-form" ref="form" :model="user">
-				<el-form-item>
+			<el-form class="login-form" ref="login-form" :model="user" :rules="formRules">
+				<el-form-item prop="mobile">
 					<el-input v-model="user.mobile" placeholder="请输入手机号"></el-input>
 				</el-form-item>
-				<el-form-item>
+				<el-form-item prop="code">
 					<el-input v-model="user.code" placeholder="请输入验证码"></el-input>
 				</el-form-item>
-				<el-form-item>
-					<el-checkbox v-model="checked">我已阅读并同意用户协议和隐私条款</el-checkbox>
+				<el-form-item prop="agree">
+					<el-checkbox v-model="user.agree">我已阅读并同意用户协议和隐私条款</el-checkbox>
 				</el-form-item>
 				<el-form-item>
-					<el-button class="login-btn" type="primary" @click="onLogin()"
-					:loading="loginLoading">登录</el-button>
+					<el-button class="login-btn" type="primary" @click="onLogin()" :loading="loginLoading">登录</el-button>
 				</el-form-item>
 			</el-form>
 		</div>
@@ -25,6 +24,9 @@
 
 <script>
 	import request from '@/utils/request.js'
+	import {
+		login
+	} from '@/api/user.js'
 	export default {
 		name: 'LoginIndex',
 		components: {},
@@ -32,11 +34,49 @@
 		data() {
 			return {
 				user: {
-					mobile: '', // 手机号
-					code: '' // 验证码
+					mobile: '13911111111', // 手机号
+					code: '246810', // 验证码
+					agree: false, // 是否同意协议的选中状态
 				},
-				checked: false ,// 是否同意协议的选中状态
-				loginLoading: false
+
+				loginLoading: false, // 加载
+				formRules: { //表单规则
+					mobile: [{
+							required: true,
+							message: '请输入手机号',
+							trigger: 'change'
+						},
+						{
+							pattern: /^1[3|5|7|8|9]\d{9}$/,
+							message: '请输入正确的手机号格式',
+							trigger: 'change'
+						}
+					],
+					code: [{
+							required: true,
+							message: '验证码不能为空',
+							trigger: 'change'
+						},
+						{
+							pattern: /^\d{6}$/,
+							message: '请输入正确的验证码格式',
+							trigger: 'change'
+						},
+					],
+					agree: [{
+						// 自定义校验规则：https://element.eleme.cn/#/zh-CN/component/form#zi-ding-yi-xiao-yan-gui-ze
+						// 验证通过：callback()
+						// 验证失败：callback(new Error('错误消息'))
+						validator: (rule, value, callback) => {
+							if (value) {
+								callback()
+							} else {
+								callback(new Error('请同意用户协议'))
+							}
+						},
+						trigger: 'change'
+					}]
+				}
 			}
 		},
 		computed: {},
@@ -45,34 +85,39 @@
 		mounted() {},
 		methods: {
 			onLogin() {
+				// 校验
+				this.$refs['login-form'].validate(valid => {
+					// 如果表单验证失败，停止请求提交
+					if (!valid) {
+						return
+					}
+					// 验证通过，请求登录
+					this.login()
+				})
+			},
+			login() {
 				const user = this.user
-				
-				//开启加载
+				// 开启加载
 				this.loginLoading = true
-				
-				request({
-					method: 'POST',
-					url: '/app/v1_0/authorizations',
-					data: user
-				}).then(res => {
+				// 调用封装的接口
+				login(this.user).then(res => {
 					console.log(res)
-					
-					//登录成功
+					// 登录成功
 					this.$message({
-					  message: '恭喜你，登录成功',
-					  type: 'success'
+						message: '恭喜你，登录成功',
+						type: 'success'
 					})
-					
-					//关闭加载
+					// 关闭加载
 					this.loginLoading = false
+					// 跳转到首页
+					this.$router.push('/')
+					
 				}).catch(err => {
 					console.log('登录失败', err)
 					this.$message.error('登录失败，手机或验证码错误')
-					//关闭加载
+					// 关闭加载
 					this.loginLoading = false
 				})
-
-
 			}
 		},
 	}
