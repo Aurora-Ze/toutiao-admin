@@ -109,6 +109,8 @@
 					})
 					// 关闭加载
 					this.loginLoading = false
+					//将后端接口返回的数据进行本地存储
+					window.localStorage.setItem('user',JSON.stringify(res.data.data))
 					// 跳转到首页
 					this.$router.push('/')
 					

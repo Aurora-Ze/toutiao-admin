@@ -1,11 +1,8 @@
 <template>
 	<div style="background-color: #002033;">
-		<div class="div-image">
-			<el-image class="aside-image" :src="require('@/assets/aside_icon.png')" fit="scale-down"></el-image>
-		</div>
-
 		<el-menu class="nav-menu" default-active="/" background-color="#002033" text-color="#fff" active-text-color="#ffd04b"
-		 router>
+		 router
+		 :collapse="isCollapse">
 			<el-menu-item index="/">
 				<i class="el-icon-s-home"></i>
 				<span slot="title">首页</span>
@@ -42,9 +39,11 @@
 	export default {
 		name: 'AppAside',
 		components: {},
-		props: {},
+		props: ['is-collapse'],
 		data() {
-			return {}
+			return {
+				isCollapse: false
+			}
 		},
 		computed: {},
 		watch: {},
@@ -59,17 +58,6 @@
 		.iconfont {
 			margin-right: 10px;
 			padding-left: 5px;
-		}
-	}
-	.div-image{
-		vertical-align: bottom;
-		margin-left: 20px;
-		width: 100%;
-		height: 40px;
-		.aside-image {
-			width: 100px;
-			height: 60px;
-			
 		}
 	}
 	

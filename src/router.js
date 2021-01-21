@@ -7,8 +7,7 @@ import Layout from '@/views/layout/'
 Vue.use(VueRouter)
 
 // 路由配置表
-const routes = [
-	{
+const routes = [{
 		path: '/login',
 		name: 'login',
 		component: Login
@@ -16,18 +15,32 @@ const routes = [
 	{
 		path: '/',
 		component: Layout,
-		children: [
-			{
-				path: '',
-				name: 'home',
-				component: Home
-			}
-		]
+		children: [{
+			path: '',
+			name: 'home',
+			component: Home
+		}]
 	}
 ]
 
 const router = new VueRouter({
-  routes
+	routes
+})
+
+router.beforeEach((to, from, next) => {
+	// 开启顶部导航进度条特效
+	//NProgress.start()
+	
+	const user = window.localStorage.getItem('user')
+	if (to.path !== '/login') {
+		if (user) {
+			next()
+		} else {
+			next('/login')
+		}
+	} else {
+		next()
+	}
 })
 
 export default router
