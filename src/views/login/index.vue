@@ -101,6 +101,7 @@
 				this.loginLoading = true
 				// 调用封装的接口
 				login(this.user).then(res => {
+					console.log("user")
 					console.log(res)
 					// 登录成功
 					this.$message({
@@ -109,7 +110,7 @@
 					})
 					// 关闭加载
 					this.loginLoading = false
-					//将后端接口返回的数据进行本地存储
+					// 将后端接口返回的数据进行本地存储
 					window.localStorage.setItem('user',JSON.stringify(res.data.data))
 					// 跳转到首页
 					this.$router.push('/')

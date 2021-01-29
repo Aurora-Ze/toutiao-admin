@@ -1,6 +1,6 @@
 <template>
 	<div style="background-color: #002033;">
-		<el-menu class="nav-menu" default-active="/" background-color="#002033" text-color="#fff" active-text-color="#ffd04b"
+		<el-menu class="nav-menu" :default-active="$route.path" background-color="#002033" text-color="#fff" active-text-color="#ffd04b"
 		 router
 		 :collapse="isCollapse">
 			<el-menu-item index="/">
@@ -41,9 +41,7 @@
 		components: {},
 		props: ['is-collapse'],
 		data() {
-			return {
-				isCollapse: false
-			}
+			return {}
 		},
 		computed: {},
 		watch: {},

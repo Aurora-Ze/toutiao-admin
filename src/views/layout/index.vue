@@ -10,7 +10,7 @@
 						'el-icon-s-fold': isCollapse,
 						'el-icon-s-unfold': !isCollapse
 					}" @click="isCollapse = ! isCollapse"></i>
-					<span>江苏传智播客科技教育有限公司</span>
+					<span class="head-company">江苏传智播客科技教育有限公司</span>
 				</div>
 				<el-dropdown>
 					<div class="avatar-wrap">
@@ -47,7 +47,7 @@
 		data() {
 			return {
 				user: {},
-				isCollapse: true
+				isCollapse: false
 			}
 		},
 		computed: {},
@@ -98,7 +98,12 @@
 			height: 100%;
 		}
 	}
-
+	.el-icon-s-fold{
+		cursor: pointer;
+	}
+	.el-icon-s-unfold{
+		cursor: pointer;
+	}
 	.header-container {
 		width: 100%;
 		height: 100%;
@@ -106,10 +111,15 @@
 		justify-content: space-between;
 		align-items: center;
 		border-bottom: 1px solid #ccc;
-
+		
+		.head-company{
+			margin-left: 10px;
+			cursor: pointer;
+		}
 		.avatar-wrap {
 			display: flex;
 			align-items: center;
+			cursor: pointer;
 
 			.avatar {
 				width: 30px;
@@ -119,7 +129,6 @@
 			}
 		}
 	}
-
 	.main {
 		background-color: #e9eef3;
 	}
