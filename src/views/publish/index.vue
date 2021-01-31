@@ -139,9 +139,9 @@
 							trigger: 'blur'
 						},
 						{
-							min: 5,
-							max: 30,
-							message: '长度在 5 到 30 个字符',
+							min: 1,
+							max: 50,
+							message: '长度在 1 到 50 个字符',
 							trigger: 'blur'
 						}
 					],
